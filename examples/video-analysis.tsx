@@ -12,9 +12,6 @@ import {WSWebRTC} from './lib/wswebrtc';
 class VideoAnalysisDemo extends React.Component<any,any>{
     constructor(props:any){
         super(props);
-        this.state={
-            show:false
-        }
     }
     private video:HTMLVideoElement;
     private flvPlayer:any;
@@ -30,37 +27,6 @@ class VideoAnalysisDemo extends React.Component<any,any>{
         }
     }
     private play(){
-        WSWebRTC.WSInit.init({
-            "userRole": 1,
-            "appId": "codyy",
-            "appKey":"A109C7F1A6914576B6753BE890555AC0",
-            "host": "wsrtc.codyy.com",
-            "userId": "sss"
-        },()=>{
-            WSWebRTC.WSEmitter.listenTo("WS_SKIN_EVENT", (obj:any)=>{
-                if(!obj) return;
-                if(obj.type === "append"&&obj.message==="Play") {
-                    const wrap=obj.data;
-                    (document.getElementById("videoWrap") as any).appendChild(wrap);
-                    const video =wrap.children[0];
-                    video.style.backgroundColor="black";
-                    this.video=video;
-                }
-            });
-            WSWebRTC.WSPlayer.play({
-                "isLiveCatch": true,
-                "url": this.url,
-                "enableAudioStrategy":true,
-                "seiConfig": {
-                    "isSei": true,
-                    "seiCallback": ()=>{}
-                }
-            });
-        })
-     
-        /*
-        
-        
         if(!this.video){
             this.video=document.createElement("video");
             this.video.autoplay=true;
@@ -91,7 +57,7 @@ class VideoAnalysisDemo extends React.Component<any,any>{
             this.play();
         });
         this.flvPlayer.attachMediaElement(this.video);
-        this.flvPlayer.load();*/
+        this.flvPlayer.load();
     }
     componentDidMount(){
         this.play();
@@ -108,7 +74,7 @@ class VideoAnalysisDemo extends React.Component<any,any>{
         return (
             <div>
                 <button key={"2"} onClick={this.start}>开始复制</button>
-                <div id={"videoWrap"}></div>
+                <video ref={(ref:HTMLVideoElement)=>this.video=ref}/>
                 <VideoAnalysis ref={(ref:VideoAnalysis)=>this.videoAnalysis=ref} clipVideo={this.getClipVideo} poster={"https://res2dev.9itest.com/resource2/1000/image/20180615/b9e099374b9f4d6ab725c1aa2c1814b8.jpeg"} width={"16rem"} height={"9rem"}/>
             </div>
         )

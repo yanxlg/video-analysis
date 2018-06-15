@@ -1,8 +1,5 @@
 /**
- * 直播video 支持默认图
- * 画布hdpi优化  分辨率设置4096×2160  默认1920*1080
- * 视屏video必须使用autoPlay属性
- * 支持动态video切换
+ * 直播video分析，支持默认图片设置
  */
 import * as React from "react";
 
@@ -31,7 +28,6 @@ export declare interface IVideoAnalysisProps extends ILayout{
     poster:string;
 }
 
-//不执行loop 业务，只保留截图功能
 
 class VideoSnapShot{
     public canvas:HTMLCanvasElement;
@@ -48,7 +44,6 @@ class VideoSnapShot{
         this.canvasContext=(this.canvas as any).getContext("2d");
     }
     public takeSnapShot(video:HTMLVideoElement,clip?:IVideoClip){
-        //TODO 如果是透明的怎么处理
         this.canvasContext.clearRect(0,0,this.canvasWidth,this.canvasHeight);//清除
         clip?this.canvasContext.drawImage(video,clip.x,clip.y,clip.width,clip.height,0,0,this.canvasWidth,this.canvasHeight)
             :this.canvasContext.drawImage(video,0,0,this.canvasWidth,this.canvasHeight)
@@ -208,7 +203,6 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     }
     
     public startPlay(){
-        //只能在didMount后调用
         if(!this.canvasContext||!this.canvas){
             console.error("不允许提前调用");
         }else{
