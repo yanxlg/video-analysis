@@ -1,6 +1,6 @@
 {
     "name": "video-analysis",
-    "version": "0.0.",
+    "version": "0.0.1",
     "author": "yanxianliang",
     "description": "video analysis component",
     "license": "MIT",
@@ -43,13 +43,14 @@
         "@types/node": "^10.3.2",
         "@types/react": "^16.3.17",
         "@types/react-dom": "^16.0.6",
-        "typescript": "^2.9.1",
-        "rc-tools":"^8.0.1",
         "async": "^0.9.0",
+        "babel-runtime": "6.x",
         "bluebird": "~2.9.30",
         "core-js": "^2.5.1",
-        "babel-runtime": "6.x",
+        "flv.js": "^1.4.2",
+        "rc-tools": "^8.0.1",
         "react": "^16.4.0",
-        "react-dom": "^16.4.0"
+        "react-dom": "^16.4.0",
+        "typescript": "^2.9.1"
     }
 }
