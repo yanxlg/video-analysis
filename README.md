@@ -1,4 +1,8 @@
 ## Video Analysis
+[![npm](https://img.shields.io/npm/v/video-analysis.svg?style=flat-square)](https://www.npmjs.com/package/video-analysis)
+[![npm](https://img.shields.io/npm/l/video-analysis.svg?style=flat-square)](https://www.npmjs.com/package/video-analysis)
+[![npm](https://img.shields.io/npm/dm/video-analysis.svg?style=flat-square)](https://www.npmjs.com/package/video-analysis)
+
 * video -> canvas ->canvas
 * 黑屏屏蔽：
     - 画布getImageData()计算rgba颜色值，通过算法比较
