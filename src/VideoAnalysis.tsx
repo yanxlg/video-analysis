@@ -35,7 +35,6 @@ class VideoSnapShot{
     private canvasHeight:number=1080;
     constructor(canvasWidth:number,canvasHeight:number){
         this.canvas=document.createElement("canvas");
-        document.body.appendChild(this.canvas);
         this.canvas.height=this.canvasHeight=canvasHeight;
         this.canvas.width=this.canvasWidth=canvasWidth;
         this.canvas.style.width=canvasHeight + "px";
