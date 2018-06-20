@@ -7,7 +7,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import VideoAnalysis from "../src/VideoAnalysis";
 import flvjs from "flv.js";
-import {WSWebRTC} from './lib/wswebrtc';
 
 class VideoAnalysisDemo extends React.Component<any,any>{
     constructor(props:any){
@@ -75,7 +74,7 @@ class VideoAnalysisDemo extends React.Component<any,any>{
             <div>
                 <button key={"2"} onClick={this.start}>开始复制</button>
                 <video ref={(ref:HTMLVideoElement)=>this.video=ref}/>
-                <VideoAnalysis ref={(ref:VideoAnalysis)=>this.videoAnalysis=ref} clipVideo={this.getClipVideo} poster={"https://res2dev.9itest.com/resource2/1000/image/20180615/b9e099374b9f4d6ab725c1aa2c1814b8.jpeg"} width={"16rem"} height={"9rem"}/>
+                <VideoAnalysis ref={(ref:VideoAnalysis)=>this.videoAnalysis=ref} clipVideo={this.getClipVideo} poster={"https://res2dev.9itest.com/resource2/1000/image/20180615/b9e099374b9f4d6ab725c1aa2c1814b8.jpeg"} style={{width:"16rem",height:"9rem"}}/>
             </div>
         )
     }

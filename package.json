@@ -1,6 +1,6 @@
 {
     "name": "video-analysis",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "author": "yanxianliang",
     "description": "video analysis component",
     "license": "MIT",
@@ -51,6 +51,7 @@
         "rc-tools": "^8.0.1",
         "react": "^16.4.0",
         "react-dom": "^16.4.0",
-        "typescript": "^2.9.1"
+        "typescript": "^2.9.1",
+        "web-library": "^0.1.4"
     }
 }

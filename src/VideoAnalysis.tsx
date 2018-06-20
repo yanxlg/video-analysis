@@ -1,13 +1,10 @@
 /**
  * 直播video分析，支持默认图片设置
+ * 控制为每秒60帧，较少浏览器压力
  */
 import * as React from "react";
+import "web-library/es/polyfills/animationFrame";
 
-
-export declare interface ILayout{
-    width:string;
-    height:string;
-}
 
 export declare interface IVideoClip{
     x:number;
@@ -23,9 +20,11 @@ export declare interface ClipVideo{
 
 
 
-export declare interface IVideoAnalysisProps extends ILayout{
+export declare interface IVideoAnalysisProps{
     clipVideo:ClipVideo|(()=>ClipVideo);
     poster:string;
+    className?:string;
+    style?:any;
 }
 
 
@@ -34,13 +33,13 @@ class VideoSnapShot{
     public canvasContext:CanvasRenderingContext2D;
     private canvasWidth:number=1920;
     private canvasHeight:number=1080;
-    constructor(layout:ILayout,canvasWidth:number,canvasHeight:number){
+    constructor(canvasWidth:number,canvasHeight:number){
         this.canvas=document.createElement("canvas");
         document.body.appendChild(this.canvas);
         this.canvas.height=this.canvasHeight=canvasHeight;
         this.canvas.width=this.canvasWidth=canvasWidth;
-        this.canvas.style.width=layout.width;
-        this.canvas.style.height=layout.height;
+        this.canvas.style.width=canvasHeight + "px";
+        this.canvas.style.height=canvasWidth + "px";
         this.canvasContext=(this.canvas as any).getContext("2d");
     }
     public takeSnapShot(video:HTMLVideoElement,clip?:IVideoClip){
@@ -87,7 +86,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         this.video.addEventListener("stalled",this.onStalled);
         this.video.addEventListener("suspend",this.onSuspend);
         this.video.addEventListener("emptied",this.onEmptied);*/
-        this.videoSnapShot=new VideoSnapShot({width:props.width,height:props.height},this.canvasWidth,this.canvasHeight);
+        this.videoSnapShot=new VideoSnapShot(this.canvasWidth,this.canvasHeight);//大小可变怎么处理
         this.analysisCanvas=this.videoSnapShot.canvas;
         this.analysisContext=this.videoSnapShot.canvasContext;
         
@@ -181,8 +180,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     }
     private loop(){
         //loop 算法
-        setTimeout(()=>{
-            //判断是否有video
+        window.requestAnimationFrame(()=>{
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
             video?(this.videoSnapShot.takeSnapShot(video,clip),this.analysis()?
@@ -192,7 +190,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             if(this.enableLoop){
                 this.loop();
             }
-        },0)
+        });
     }
     private startLoop(){
         this.enableLoop=true;
@@ -216,8 +214,8 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         return false;//不支持更新属性
     }
     render(){
-        const {width,height}=this.props;
-        return <canvas ref={(ref:HTMLCanvasElement)=>this.canvas=ref} width={this.canvasWidth} height={this.canvasHeight} style={{width,height}}/>
+        const {className,style} = this.props;
+        return <canvas ref={(ref:HTMLCanvasElement)=>this.canvas=ref} width={this.canvasWidth} height={this.canvasHeight} className={className} style={style}/>
     }
 }
 
