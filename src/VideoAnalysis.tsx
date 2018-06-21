@@ -180,15 +180,15 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     private loop(){
         //loop 算法
         window.requestAnimationFrame(()=>{
+            if(this.enableLoop){
+                this.loop();//loop提前，加速运行
+            }
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
             video?(this.videoSnapShot.takeSnapShot(video,clip),this.analysis()?
-                    (this.canvasContext.clearRect(0,0,this.canvasWidth,this.canvasHeight),this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
-                    :this.placeholderImage&&!this.showPoster?(this.canvasContext.clearRect(0,0,this.canvasWidth,this.canvasHeight),this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
-            ):this.placeholderImage&&!this.showPoster?(this.canvasContext.clearRect(0,0,this.canvasWidth,this.canvasHeight),this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
-            if(this.enableLoop){
-                this.loop();
-            }
+                    (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
+                    :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
+            ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
         });
     }
     private startLoop(){
