@@ -14,7 +14,7 @@ export declare interface IVideoClip{
 }
 
 export declare interface ClipVideo{
-    video:HTMLVideoElement;
+    video?:HTMLVideoElement;
     clip?:IVideoClip;
 }
 
@@ -189,7 +189,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             if(this.enableLoop){
                 this.loop();//loop提前，加速运行
             }
-        },0);
+        },10);
 /*        window.requestAnimationFrame(()=>{
             if(this.enableLoop){
                 this.loop();//loop提前，加速运行
