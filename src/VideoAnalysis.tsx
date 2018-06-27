@@ -177,30 +177,35 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         }
         return false;
     }
+    private filterTime:number;
+    private filter(video:HTMLVideoElement,clip:IVideoClip|undefined){
+        const now=Date.now();
+        if(this.filterTime){
+            if(now-this.filterTime<300){
+                return true;
+            }else{
+                this.filterTime=now;
+            }
+        }else{
+            this.filterTime=now;
+        }
+        //添加throllter
+        this.videoSnapShot.takeSnapShot(video,clip);
+        return this.analysis();
+    }
     private loop(){
         //loop 算法
-        setTimeout(()=>{
-            const clipVideo = this.getClipVideo();
-            const {video,clip}=clipVideo;
-            video?(this.videoSnapShot.takeSnapShot(video,clip),this.analysis()?
-                    (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
-                    :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
-            ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
-            if(this.enableLoop){
-                this.loop();//loop提前，加速运行
-            }
-        },10);
-/*        window.requestAnimationFrame(()=>{
+        window.requestAnimationFrame(()=>{
             if(this.enableLoop){
                 this.loop();//loop提前，加速运行
             }
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
-            video?(this.videoSnapShot.takeSnapShot(video,clip),this.analysis()?
+            video?(this.filter(video,clip)?
                     (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
                     :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
             ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
-        });*/
+        });
     }
     private startLoop(){
         this.enableLoop=true;
