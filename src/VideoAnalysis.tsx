@@ -195,7 +195,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     }
     private loop(){
         //loop 算法
-        window.requestAnimationFrame(()=>{
+        setTimeout(()=>{
             if(this.enableLoop){
                 this.loop();//loop提前，加速运行
             }
@@ -205,7 +205,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
                     (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
                     :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
             ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
-        });
+        },100);
     }
     private startLoop(){
         this.enableLoop=true;
