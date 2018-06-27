@@ -180,6 +180,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     private filterTime:number;
     private filter(video:HTMLVideoElement,clip:IVideoClip|undefined){
         const now=Date.now();
+        this.videoSnapShot.takeSnapShot(video,clip);//必须执行，否则会卡顿
         if(this.filterTime){
             if(now-this.filterTime<300){
                 return true;
@@ -190,12 +191,22 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             this.filterTime=now;
         }
         //添加throllter
-        this.videoSnapShot.takeSnapShot(video,clip);
         return this.analysis();
     }
     private loop(){
         //loop 算法
-        setTimeout(()=>{
+        window.requestAnimationFrame(()=>{
+            if(this.enableLoop){
+                this.loop();
+            }
+            const clipVideo = this.getClipVideo();
+            const {video,clip}=clipVideo;
+            video?(this.filter(video,clip)?
+                    (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
+                    :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
+            ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
+        })
+/*        setTimeout(()=>{
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
             video?(this.filter(video,clip)?
@@ -205,7 +216,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             if(this.enableLoop){
                 this.loop();
             }
-        },0);
+        },0);*/
     }
     private startLoop(){
         this.enableLoop=true;
