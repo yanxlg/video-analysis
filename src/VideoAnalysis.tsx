@@ -178,12 +178,13 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         return false;
     }
     private filterTime:number;
+    private filterResult:boolean=false;
     private filter(video:HTMLVideoElement,clip:IVideoClip|undefined){
         const now=Date.now();
         this.videoSnapShot.takeSnapShot(video,clip);//必须执行，否则会卡顿
         if(this.filterTime){
             if(now-this.filterTime<300){
-                return true;
+                return this.filterResult;
             }else{
                 this.filterTime=now;
             }
@@ -191,11 +192,12 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             this.filterTime=now;
         }
         //添加throllter
-        return this.analysis();
+        this.filterResult=this.analysis();
+        return this.filterResult;
     }
     private loop(){
         //loop 算法
-        window.requestAnimationFrame(()=>{
+    /*    window.requestAnimationFrame(()=>{
             if(this.enableLoop){
                 this.loop();
             }
@@ -205,8 +207,8 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
                     (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
                     :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
             ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
-        })
-/*        setTimeout(()=>{
+        })*/
+        setTimeout(()=>{
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
             video?(this.filter(video,clip)?
@@ -216,7 +218,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             if(this.enableLoop){
                 this.loop();
             }
-        },0);*/
+        },0);
     }
     private startLoop(){
         this.enableLoop=true;
