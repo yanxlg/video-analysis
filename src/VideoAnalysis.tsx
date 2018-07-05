@@ -27,6 +27,7 @@ export declare interface IVideoAnalysisProps{
     style?:any;
 }
 
+/*
 
 class VideoSnapShot{
     public canvas:HTMLCanvasElement;
@@ -48,18 +49,19 @@ class VideoSnapShot{
     }
     
 }
+*/
 
 class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     // private playing:boolean=false;
-    private videoSnapShot:VideoSnapShot;
+    // private videoSnapShot:VideoSnapShot;
     private canvasWidth:number=1920;
     private canvasHeight:number=1080;
     private placeholderImage:HTMLImageElement;
     private canvas:HTMLCanvasElement;
     private canvasContext:CanvasRenderingContext2D;
     private getClipVideo:()=>ClipVideo;
-    private analysisCanvas:HTMLCanvasElement;
-    private analysisContext:CanvasRenderingContext2D;
+    // private analysisCanvas:HTMLCanvasElement;
+    // private analysisContext:CanvasRenderingContext2D;
     private enableLoop:boolean=false;
     private showPoster:boolean=false;
     constructor(props:IVideoAnalysisProps){
@@ -85,9 +87,9 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         this.video.addEventListener("stalled",this.onStalled);
         this.video.addEventListener("suspend",this.onSuspend);
         this.video.addEventListener("emptied",this.onEmptied);*/
-        this.videoSnapShot=new VideoSnapShot(this.canvasWidth,this.canvasHeight);//大小可变怎么处理
-        this.analysisCanvas=this.videoSnapShot.canvas;
-        this.analysisContext=this.videoSnapShot.canvasContext;
+        // this.videoSnapShot=new VideoSnapShot(this.canvasWidth,this.canvasHeight);//大小可变怎么处理
+        // this.analysisCanvas=this.videoSnapShot.canvas;
+        // this.analysisContext=this.videoSnapShot.canvasContext;
         
         
         
@@ -132,7 +134,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
     componentDidMount(){
         this.canvasContext=(this.canvas as any).getContext("2d");
     }
-    private analysis(){
+   /* private analysis(){
         const canvas =this.analysisCanvas;
         const context = this.analysisContext;
         const point1=context.getImageData(0,0,1,1).data;
@@ -176,10 +178,10 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
             }
         }
         return false;
-    }
-    private filterTime:number;
-    private filterResult:boolean=false;
-    private filter(video:HTMLVideoElement,clip:IVideoClip|undefined){
+    }*/
+    // private filterTime:number;
+    // private filterResult:boolean=false;
+/*    private filter(video:HTMLVideoElement,clip:IVideoClip|undefined){
         const now=Date.now();
         this.videoSnapShot.takeSnapShot(video,clip);//必须执行，否则会卡顿
         if(this.filterTime){
@@ -194,7 +196,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         //添加throllter
         this.filterResult=this.analysis();
         return this.filterResult;
-    }
+    }*/
     private loop(){
         //loop 算法
     /*    window.requestAnimationFrame(()=>{
@@ -211,9 +213,7 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         setTimeout(()=>{
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
-            video?(this.filter(video,clip)?
-                    (this.canvasContext.drawImage(this.analysisCanvas,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
-                    :this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null
+            video?((clip?this.canvasContext.drawImage(video,clip.x,clip.y,clip.width,clip.height,0,0,this.canvasWidth,this.canvasHeight):this.canvasContext.drawImage(video,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
             ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
             if(this.enableLoop){
                 this.loop();
