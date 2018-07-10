@@ -213,12 +213,14 @@ class VideoAnalysis extends React.Component<IVideoAnalysisProps>{
         setTimeout(()=>{
             const clipVideo = this.getClipVideo();
             const {video,clip}=clipVideo;
+            //10帧清空一次
+            this.canvasContext.clearRect(0,0,this.canvasWidth,this.canvasHeight);
             video?((clip?this.canvasContext.drawImage(video,clip.x,clip.y,clip.width,clip.height,0,0,this.canvasWidth,this.canvasHeight):this.canvasContext.drawImage(video,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=false)
             ):this.placeholderImage&&!this.showPoster?(this.canvasContext.drawImage(this.placeholderImage,0,0,this.canvasWidth,this.canvasHeight),this.showPoster=true):null;
             if(this.enableLoop){
                 this.loop();
             }
-        },0);
+        },20);
     }
     private startLoop(){
         this.enableLoop=true;
